@@ -1,5 +1,7 @@
 # Web Cat App — catalogue de produits Angular
 
+[![CI](https://github.com/erryhany/web-cat-app/actions/workflows/ci.yml/badge.svg)](https://github.com/erryhany/web-cat-app/actions/workflows/ci.yml)
+
 Application **Angular 19** de consultation d'un catalogue de produits, branchée sur une API REST simulée avec **json-server**. Le projet met l'accent sur la **programmation réactive avec RxJS** : chaque appel HTTP passe explicitement par les états *chargement*, *chargé* et *erreur*.
 
 ![Angular](https://img.shields.io/badge/Angular-19-DD0031)
