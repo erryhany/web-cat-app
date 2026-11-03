@@ -1,59 +1,76 @@
-# WebCatApp
+# Web Cat App — catalogue de produits Angular
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.4.
+Application **Angular 19** de consultation d'un catalogue de produits, branchée sur une API REST simulée avec **json-server**. Le projet met l'accent sur la **programmation réactive avec RxJS** : chaque appel HTTP passe explicitement par les états *chargement*, *chargé* et *erreur*.
 
-## Development server
+![Angular](https://img.shields.io/badge/Angular-19-DD0031)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6)
+![RxJS](https://img.shields.io/badge/RxJS-7.8-B7178C)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3)
 
-To start a local development server, run:
+## Fonctionnalités
 
-```bash
-ng serve
+- Liste de **tous les produits**, des produits **sélectionnés** et des produits **disponibles**
+- **Recherche** par mot-clé (formulaire template-driven)
+- **Gestion d'état des requêtes** : indicateur de chargement, affichage des données, message d'erreur
+- **Simulation de panne réseau** : environ 10 % des appels « tous les produits » visent volontairement un hôte injoignable, pour montrer la gestion d'erreur
+- Navigation entre l'accueil et le catalogue (Angular Router)
+
+## Points techniques
+
+- **Composants standalone** (sans `NgModule`)
+- **Pipeline RxJS** sur chaque requête : `map` → `startWith(LOADING)` → `catchError(ERROR)`, consommé dans le template avec le pipe `async`
+- **État générique typé** `AppDataState<T>` associé à l'enum `DataStateEnum`, réutilisable pour tout type de données
+- **Service injectable** avec `HttpClient` et URL d'API définie par environnement (`environment.ts`)
+- **Rendu côté serveur (SSR)** configuré avec `@angular/ssr`
+
+## Stack technique
+
+| Couche | Technologies |
+|---|---|
+| Framework | Angular 19 (standalone components, Router, SSR) |
+| Langage | TypeScript |
+| Réactivité | RxJS 7 |
+| UI | Bootstrap 5, Font Awesome |
+| API simulée | json-server (`db.json`) |
+
+## Architecture
+
+```
+src/app/
+├── components/
+│   ├── home/        → page d'accueil
+│   ├── nav-bar/     → barre de navigation
+│   └── products/    → catalogue (liste, filtres, recherche)
+├── services/        → ProductsService (appels HTTP)
+├── model/           → interface Product
+└── state/           → AppDataState<T> et DataStateEnum
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Lancer le projet
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Prérequis : Node.js 18 ou plus.
 
 ```bash
-ng generate component component-name
+git clone https://github.com/erryhany/web-cat-app.git
+cd web-cat-app
+npm install
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+`npm start` lance en parallèle :
 
-```bash
-ng generate --help
-```
+| Service | URL |
+|---|---|
+| Application Angular | http://localhost:4200 |
+| API json-server | http://localhost:3000/products |
 
-## Building
+## Pistes d'évolution
 
-To build the project run:
+- Remplacer json-server par un back-end **Spring Boot** et une base de données
+- Ajouter les opérations d'écriture : sélectionner, supprimer, créer et modifier un produit
+- Factoriser le pipeline RxJS répété dans le composant
+- Tests unitaires des services et composants
 
-```bash
-ng build
-```
+## Auteur
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Mourad Erryhany** — Développeur Java / Spring Boot · [GitHub](https://github.com/erryhany)
